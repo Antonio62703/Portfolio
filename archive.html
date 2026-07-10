@@ -33,17 +33,28 @@
       font-style: normal;
     }
 
+    @font-face {
+      font-family: 'ABC Monument Grotesk Regular';
+      src: url('fonts/ABCMonumentGrotesk-Regular-Trial.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
     .info-section {
       margin-bottom: 2rem;
     }
 
     .site-name {
-      font-family: 'ABC Monument Grotesk Medium', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-family: 'ABC Monument Grotesk Regular', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 16px;
       color: #000000;
-      position: absolute;
+      position: fixed;
       top: 1.5cm;
       left: var(--edge-margin);
+    }
+
+    .site-name .name-highlight {
+      font-family: 'ABC Monument Grotesk Medium', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     }
 
     .archive-grid {
@@ -66,25 +77,67 @@
       object-fit: cover;
       display: block;
     }
+
+    .work-caption {
+      margin-top: 0.75rem;
+      font-family: 'ABC Monument Grotesk Regular', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      color: #000000;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .work-caption p {
+      margin: 0;
+    }
   </style>
 </head>
 <body>
 
   <div class="archive-wrapper">
     <div class="info-section">
-      <p class="site-name">Antonio Chen</p>
+      <p class="site-name"><span class="name-highlight">Antonio Chen</span></p>
     </div>
     <div class="archive-grid">
-      <div class="work-item"><video src="display/work1.mp4" autoplay muted loop playsinline></video></div>
-      <div class="work-item"><video src="display/work2.mov" autoplay muted loop playsinline></video></div>
-      <div class="work-item"><img src="display/work3.jpg" alt="Work 3"></div>
-      <div class="work-item"><img src="display/work4.jpg" alt="Work 4"></div>
-      <div class="work-item"><img src="display/work5.jpg" alt="Work 5"></div>
-      <div class="work-item"><img src="display/work6.jpg" alt="Work 6"></div>
-      <div class="work-item"><img src="display/work7.jpg" alt="Work 7"></div>
-      <div class="work-item"><video src="display/work8.mov" autoplay muted loop playsinline></video></div>
-      <div class="work-item"><img src="display/work9.jpg" alt="Work 9"></div>
-      <div class="work-item"><img src="display/work10.jpg" alt="Work 10"></div>
+      <div class="work">
+        <div class="work-item"><img src="display/work1.jpg" alt="Work 1"></div>
+        <div class="work-caption"><p>Name</p><p>Medium</p><p>Year</p></div>
+      </div>
+      <div class="work">
+        <div class="work-item"><video src="display/work2.mov" autoplay muted loop playsinline></video></div>
+        <div class="work-caption"><p>Name</p><p>Medium</p><p>Year</p></div>
+      </div>
+      <div class="work">
+        <div class="work-item"><img src="display/work3.jpg" alt="Work 3"></div>
+        <div class="work-caption"><p>Name</p><p>Medium</p><p>Year</p></div>
+      </div>
+      <div class="work">
+        <div class="work-item"><img src="display/work4.jpg" alt="Work 4"></div>
+        <div class="work-caption"><p>Name</p><p>Medium</p><p>Year</p></div>
+      </div>
+      <div class="work">
+        <div class="work-item"><img src="display/work5.jpg" alt="Work 5"></div>
+        <div class="work-caption"><p>Name</p><p>Medium</p><p>Year</p></div>
+      </div>
+      <div class="work">
+        <div class="work-item"><img src="display/work6.jpg" alt="Work 6"></div>
+        <div class="work-caption"><p>Name</p><p>Medium</p><p>Year</p></div>
+      </div>
+      <div class="work">
+        <div class="work-item"><img src="display/work7.jpg" alt="Work 7"></div>
+        <div class="work-caption"><p>Name</p><p>Medium</p><p>Year</p></div>
+      </div>
+      <div class="work">
+        <div class="work-item"><video src="display/work8.mov" autoplay muted loop playsinline></video></div>
+        <div class="work-caption"><p>Name</p><p>Medium</p><p>Year</p></div>
+      </div>
+      <div class="work">
+        <div class="work-item"><img src="display/work9.jpg" alt="Work 9"></div>
+        <div class="work-caption"><p>Name</p><p>Medium</p><p>Year</p></div>
+      </div>
+      <div class="work">
+        <div class="work-item"><img src="display/work10.jpg" alt="Work 10"></div>
+        <div class="work-caption"><p>Name</p><p>Medium</p><p>Year</p></div>
+      </div>
     </div>
   </div>
 
