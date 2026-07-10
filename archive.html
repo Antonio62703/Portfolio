@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Archive</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      background-color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      position: relative;
+    }
+
+    :root {
+      --edge-margin: 1.5cm;
+      --top-margin: 3cm;
+    }
+
+    .archive-wrapper {
+      padding: var(--top-margin) var(--edge-margin) var(--edge-margin) var(--edge-margin);
+    }
+
+    @font-face {
+      font-family: 'ABC Monument Grotesk Medium';
+      src: url('fonts/ABCMonumentGrotesk-Medium-Trial.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    .info-section {
+      margin-bottom: 2rem;
+    }
+
+    .site-name {
+      font-family: 'ABC Monument Grotesk Medium', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      color: #000000;
+      position: absolute;
+      top: 1.5cm;
+      left: var(--edge-margin);
+    }
+
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      row-gap: calc(var(--edge-margin) * 2);
+      column-gap: 1.25rem;
+    }
+
+    .work-item {
+      aspect-ratio: 16 / 10;
+      background-color: #eaeaea;
+      overflow: hidden;
+    }
+
+    .work-item img,
+    .work-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="archive-wrapper">
+    <div class="info-section">
+      <p class="site-name">Antonio Chen</p>
+    </div>
+    <div class="archive-grid">
+      <div class="work-item"><video src="display/work1.mp4" autoplay muted loop playsinline></video></div>
+      <div class="work-item"><video src="display/work2.mov" autoplay muted loop playsinline></video></div>
+      <div class="work-item"><img src="display/work3.jpg" alt="Work 3"></div>
+      <div class="work-item"><img src="display/work4.jpg" alt="Work 4"></div>
+      <div class="work-item"><img src="display/work5.jpg" alt="Work 5"></div>
+      <div class="work-item"><img src="display/work6.jpg" alt="Work 6"></div>
+      <div class="work-item"><img src="display/work7.jpg" alt="Work 7"></div>
+      <div class="work-item"><video src="display/work8.mov" autoplay muted loop playsinline></video></div>
+      <div class="work-item"><img src="display/work9.jpg" alt="Work 9"></div>
+      <div class="work-item"><img src="display/work10.jpg" alt="Work 10"></div>
+    </div>
+  </div>
+
+</body>
+</html>
