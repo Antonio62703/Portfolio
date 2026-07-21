@@ -3,8 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio</title>
+  <title>Antonio Chen</title>
   <style>
+    @font-face {
+      font-family: "ABCGaisyr";
+      src: url("./fonts/ABCGaisyr-Book-Trial.woff") format("woff");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "ABC Gaisyr Light Italic";
+      src: url("./fonts/ABCGaisyr-LightItalic-Trial.woff") format("woff");
+      font-weight: 400;
+      font-style: italic;
+      font-display: swap;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -13,40 +29,624 @@
 
     html, body {
       height: 100%;
+      overflow-y: scroll;
+      scrollbar-gutter: stable;
+    }
+
+    .bg-image {
+      position: fixed;
+      top: 0;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transition: opacity 1.8s ease;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bg-image video {
+      display: none;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     body {
+      background-color: #ffffff;
+      color: #111111;
+      font-family: "ABCGaisyr", Georgia, "Times New Roman", serif;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      background-color: #0f0f0f;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      padding: 2.5rem 2rem 3.5rem;
+      overflow-x: hidden;
     }
 
-    .enter-btn {
-      padding: 1rem 2.5rem;
-      font-size: 1rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: #f5f5f5;
-      background: transparent;
-      border: 1px solid #f5f5f5;
-      border-radius: 2px;
-      cursor: pointer;
-      transition: background-color 0.2s ease, color 0.2s ease;
+    .stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    /* Hidden until the title has had a moment to show on its own, then
+       faded in via JS adding .is-visible. */
+    .reveal-after-title {
+      opacity: 0;
+      transition: opacity 0.9s ease;
+    }
+
+    .reveal-after-title.is-visible {
+      opacity: 1;
+    }
+
+    /* --- top-left nav --- */
+    nav.works-nav {
+      position: fixed;
+      top: 2rem;
+      left: 2.25rem;
+      z-index: 1000;
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.4rem;
+    }
+
+    nav.works-nav a {
+      font-size: 14pt;
+      color: #111111;
       text-decoration: none;
-      display: inline-block;
+      transition: opacity 0.25s ease;
     }
 
-    .enter-btn:hover {
-      background-color: #f5f5f5;
-      color: #0f0f0f;
+    nav.works-nav a:hover {
+      opacity: 0.55;
+    }
+
+    /* --- title --- */
+    .title {
+      width: min(90vw, 900px);
+      margin-top: 6rem;
+      text-align: center;
+    }
+
+    .title .name-highlight {
+      position: relative;
+      display: block;
+      height: 130px;
+      font-family: "ABCGaisyr", Georgia, serif;
+      font-size: 30px;
+      color: #111111;
+    }
+
+    /* Each letter's static grid position — the (x, y) coordinate computed
+       from the arc's circle geometry — set once via JS, never animated, so
+       it doesn't fight with the hover spin (which lives on the nested
+       .letter span below). transform-origin is the bottom-center of the
+       letter, so it pivots exactly on its grid point, the same anchor the
+       arc's coordinates describe. */
+    .title .name-highlight .letter-pos {
+      position: absolute;
+      transform-origin: 50% 100%;
+    }
+
+    /* --- letter spin (hover) --- */
+    .title .name-highlight span.letter,
+    .selected-works-vertical span.letter {
+      display: inline-block;
+      transform-origin: 50% 55%;
+    }
+
+    .title .name-highlight span.letter.spin,
+    .selected-works-vertical span.letter.spin {
+      animation: letter-spin 0.6s ease;
+    }
+
+    @keyframes letter-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* --- works section --- */
+    .works-section {
+      --works-gap: clamp(2.5rem, 6vw, 5rem);
+      display: grid;
+      grid-template-columns: max-content auto max-content;
+      justify-content: center;
+      align-items: start;
+      column-gap: var(--works-gap);
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    .works-column {
+      display: flex;
+      flex-direction: column;
+      gap: 2.75rem;
+      padding-top: 1.3rem;
+    }
+
+    .works-column.left,
+    .works-column.right {
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .work-item-title {
+      font-size: 14pt;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    /* Widen the hover-trigger zone toward the center "selected works"
+       column without shifting the visible text or the column's own width:
+       padding adds the extra hit area, the matching negative margin cancels
+       it back out for layout purposes. Tied to the actual column gap so it
+       reaches almost to the middle column at any viewport size, with a
+       small buffer left so it doesn't sit directly on top of the text. */
+    .works-column.left .work-item {
+      padding-right: calc(var(--works-gap) - 0.5rem);
+      margin-right: calc(-1 * (var(--works-gap) - 0.5rem));
+    }
+
+    .works-column.right .work-item {
+      padding-left: calc(var(--works-gap) - 0.5rem);
+      margin-left: calc(-1 * (var(--works-gap) - 0.5rem));
+    }
+
+    .work-item-title sup {
+      font-size: 0.6em;
+      vertical-align: super;
+      position: relative;
+      top: -0.55em;
+      margin-right: 0.15rem;
+      opacity: 0.75;
+    }
+
+    .work-item-title a {
+      color: #111111;
+      text-decoration: none;
+      transition: opacity 0.25s ease, color 1s ease;
+    }
+
+    .work-item-title sup {
+      transition: color 1s ease;
+    }
+
+    .work-item-medium {
+      display: block;
+      font-family: "ABC Gaisyr Light Italic", "ABCGaisyr", Georgia, serif;
+      font-style: italic;
+      font-size: 10pt;
+      white-space: nowrap;
+      color: #111111;
+      margin-top: 0.2rem;
+      transition: color 1s ease;
+    }
+
+    .works-column.image-behind .work-item-title a,
+    .works-column.image-behind .work-item-title sup,
+    .works-column.image-behind .work-item-medium {
+      color: #ffffff;
+    }
+
+    .work-item-title a:hover {
+      opacity: 0.55;
+    }
+
+    .selected-works-vertical {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-style: italic;
+      font-size: 14pt;
+      line-height: 1.15;
+      color: #111111;
+      flex-shrink: 0;
+    }
+
+    .selected-works-vertical span {
+      display: block;
+    }
+
+    /* --- bio footer --- */
+    .bio {
+      margin-top: 4rem;
+      text-align: center;
+      font-size: 14pt;
+      line-height: 1.5;
+      max-width: 40rem;
+    }
+
+    @media (max-width: 720px) {
+      .works-section {
+        grid-template-columns: 1fr;
+        justify-items: start;
+        row-gap: 2rem;
+      }
+
+      .works-column.left,
+      .works-column.right {
+        text-align: left;
+      }
+
+      .selected-works-vertical {
+        flex-direction: row;
+        gap: 0.15rem;
+      }
+
+      .work-item-title {
+        white-space: normal;
+      }
     }
   </style>
 </head>
 <body>
 
-  <a href="archive.html" class="enter-btn">Enter</a>
+  <nav class="works-nav reveal-after-title">
+    <a href="info.html">Info</a>
+    <a href="archive.html">Works</a>
+  </nav>
+
+  <div class="bg-image" id="bgRightHalfA"></div>
+  <div class="bg-image" id="bgRightHalfB"></div>
+  <div class="bg-image" id="bgLeftHalfA"></div>
+  <div class="bg-image" id="bgLeftHalfB"></div>
+
+  <div class="stage">
+    <header class="title">
+      <span class="name-highlight" id="titleName"></span>
+    </header>
+
+    <section class="works-section reveal-after-title">
+      <div class="works-column left">
+        <div class="work-item" data-image="work10.jpg"><span class="work-item-title"><sup>1</sup><a href="kayak.html">Kayak Slalom toolkit</a></span><span class="work-item-medium">Publication</span></div>
+        <div class="work-item" data-image="work7.jpg"><span class="work-item-title"><sup>2</sup><a href="kan.html">KAN: 台灣人乁招牌</a></span><span class="work-item-medium">Publication</span></div>
+        <div class="work-item" data-image="dissamsung.mov"><span class="work-item-title"><sup>3</sup><a href="samsung.html">Samsung GalaxyZ Fold6 Ad</a></span><span class="work-item-medium">Videography, Creative Directing</span></div>
+      </div>
+
+      <div class="selected-works-vertical" id="selectedWorks"></div>
+
+      <div class="works-column right">
+        <div class="work-item" data-image="work3.jpg"><span class="work-item-title"><sup>4</sup><a href="winston.html">Interview with Winston Cuevas</a></span><span class="work-item-medium">Publication</span></div>
+        <div class="work-item" data-image="work1.jpg"><span class="work-item-title"><sup>5</sup><a href="atheneaum.html">Personalizing the Impersonal</a></span><span class="work-item-medium">Web, Installation</span></div>
+        <div class="work-item" data-image="work6.jpg"><span class="work-item-title"><sup>6</sup><a href="sneakers.html">Sneakers Collection</a></span><span class="work-item-medium">Multimedia</span></div>
+      </div>
+    </section>
+
+    <footer class="bio reveal-after-title">
+      <p>Antonio Chen is an Taiwanese Olympian and Graphic Designer<br>currently enrolled in RISD (Rhode Island School of Design)</p>
+    </footer>
+  </div>
+
+  <script>
+    const word = "selected works";
+    const container = document.getElementById("selectedWorks");
+    [...word].forEach((char) => {
+      const span = document.createElement("span");
+      span.textContent = char === " " ? "\u00A0" : char;
+      if (char === " ") span.style.height = "0.6em";
+      if (char !== " ") span.classList.add("letter");
+      container.appendChild(span);
+    });
+
+    // Recreate the look of the old arc using plain, flat HTML text. Rather
+    // than approximating the curve with normal text flow (which drifts from
+    // the true circle at the ends — the horizontal spacing of flowed text
+    // isn't the same as arc-length spacing), each letter gets an exact
+    // (x, y) coordinate read straight off the same circle the SVG path used
+    // to follow — a "grid" of points along that semicircle. Each letter's
+    // bottom-center is anchored to its own grid point via transform-origin,
+    // so it sits and pivots exactly where the true arc would place it. The
+    // static grid position lives on a wrapper span; the hover spin lives on
+    // a separate span nested inside it, so the two transforms don't fight —
+    // the letter keeps its grid position and spins on top of it.
+    const ARC_RADIUS = 100;
+    const ARC_START_DEG = 180;
+    const ARC_SWEEP_DEG = 180;
+    const ARC_LENGTH = ARC_RADIUS * (ARC_SWEEP_DEG * Math.PI / 180);
+    const ARC_FONT_SIZE = 30;
+    const ARC_LETTER_SPACING = 2 * (4 / 3); // 2pt -> px
+    const ARC_BASELINE_Y = 100; // reference y within the title container
+
+    const titleWord = "Antonio Chen";
+    const titleContainer = document.getElementById("titleName");
+
+    function computeArcGrid(text) {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      ctx.font = `${ARC_FONT_SIZE}px "ABCGaisyr", Georgia, "Times New Roman", serif`;
+
+      const chars = [...text];
+      const widths = chars.map((ch) => ctx.measureText(ch).width);
+      // Letter-spacing sits *between* characters, so a string of N characters
+      // has N-1 gaps, not N — summing one gap per character (as before)
+      // over-counted a trailing gap after the very last letter, which nudged
+      // the computed center point off to one side.
+      const totalLength = widths.reduce((sum, w) => sum + w, 0) + (chars.length - 1) * ARC_LETTER_SPACING;
+
+      let running = 0;
+      return chars.map((ch, i) => {
+        const centerOffset = running + widths[i] / 2;
+        running += widths[i] + ARC_LETTER_SPACING;
+        if (ch === " ") return null;
+
+        // Point on the circle, read directly off its true geometry — this
+        // is the letter's grid point, not an approximation of it.
+        const s = ARC_LENGTH / 2 - totalLength / 2 + centerOffset;
+        const angleDeg = ARC_START_DEG + (s / ARC_RADIUS) * (180 / Math.PI);
+        const angleRad = (angleDeg * Math.PI) / 180;
+        return {
+          x: ARC_RADIUS * Math.cos(angleRad),
+          y: ARC_RADIUS * Math.sin(angleRad),
+          rotation: angleDeg + 90,
+          width: widths[i],
+        };
+      });
+    }
+
+    // Small manual correction, carried over from the old SVG title (which
+    // used the same -20px nudge) — canvas-measured widths are close to but
+    // not pixel-identical to the real rendered glyphs, so a hair of manual
+    // centering correction is expected. Adjust this if it still drifts.
+    const ARC_CENTER_NUDGE_X = -20;
+
+    function buildTitle() {
+      titleContainer.innerHTML = "";
+      const grid = computeArcGrid(titleWord);
+
+      [...titleWord].forEach((char, i) => {
+        if (char === " ") return; // no box needed — its width is already
+                                   // baked into the grid via ARC_LETTER_SPACING
+
+        const point = grid[i];
+        const wrapper = document.createElement("span");
+        wrapper.className = "letter-pos";
+        // Position the box so its bottom-center — the transform-origin —
+        // lands exactly on the grid point (x, y), before rotation is applied.
+        wrapper.style.left = `calc(50% + ${(point.x - point.width / 2 + ARC_CENTER_NUDGE_X).toFixed(2)}px)`;
+        wrapper.style.top = `${(ARC_BASELINE_Y + point.y - ARC_FONT_SIZE).toFixed(2)}px`;
+        wrapper.style.transform = `rotate(${point.rotation.toFixed(2)}deg)`;
+
+        const letter = document.createElement("span");
+        letter.className = "letter";
+        letter.textContent = char;
+
+        wrapper.appendChild(letter);
+        titleContainer.appendChild(wrapper);
+      });
+    }
+
+    buildTitle();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(buildTitle);
+    }
+
+    // Let the title sit on its own for a beat before the rest of the page
+    // fades in around it.
+    const TITLE_LEAD_DELAY = 500;
+    function revealRestOfPage() {
+      document.querySelectorAll(".reveal-after-title").forEach((el) => {
+        el.classList.add("is-visible");
+      });
+    }
+    setTimeout(revealRestOfPage, TITLE_LEAD_DELAY);
+
+    // Hover-triggered letter spin, shared by the title and "selected works":
+    // spin once in place, then a short cooldown before it can spin again.
+    // Re-run after buildTitle() rebuilds the title letters on font load.
+    function bindLetterSpin(letters) {
+      letters.forEach((letter) => {
+        let state = "idle";
+
+        letter.addEventListener("mouseenter", () => {
+          if (state !== "idle") return;
+          state = "spinning";
+          letter.classList.add("spin");
+        });
+
+        letter.addEventListener("animationend", () => {
+          letter.classList.remove("spin");
+          state = "cooldown";
+          setTimeout(() => {
+            state = "idle";
+          }, 500);
+        });
+      });
+    }
+
+    bindLetterSpin(document.querySelectorAll(".selected-works-vertical span.letter"));
+    bindLetterSpin(document.querySelectorAll(".title .name-highlight span.letter"));
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        bindLetterSpin(document.querySelectorAll(".title .name-highlight span.letter"));
+      });
+    }
+
+    // Align each medium line with where the title's actual name text starts
+    // (i.e. past the superscript number), not the left edge of the whole
+    // row. Measured against the title wrapper specifically — not the outer
+    // .work-item — since .work-item carries the hover-extension padding
+    // trick (positive padding + matching negative margin) on the right
+    // column, which shifts the item's own box without moving its visible
+    // content; measuring from that box would pick up that shift too.
+    function alignMediumsToTitles() {
+      document.querySelectorAll(".work-item").forEach((item) => {
+        const titleEl = item.querySelector(".work-item-title");
+        const titleLink = titleEl ? titleEl.querySelector("a") : null;
+        const medium = item.querySelector(".work-item-medium");
+        if (!titleEl || !titleLink || !medium) return;
+        const titleRect = titleEl.getBoundingClientRect();
+        const linkRect = titleLink.getBoundingClientRect();
+        medium.style.marginLeft = `${(linkRect.left - titleRect.left).toFixed(2)}px`;
+      });
+    }
+
+    alignMediumsToTitles();
+    window.addEventListener("resize", alignMediumsToTitles);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(alignMediumsToTitles);
+    }
+
+    // Position the stage so the vertical MIDPOINT of "selected works"
+    // lands exactly at the center of the viewport, not the top of it.
+    function centerOnSelectedWorks() {
+      const stage = document.querySelector(".stage");
+      const worksSection = document.querySelector(".works-section");
+      stage.style.transform = "translateY(0px)";
+      const rect = worksSection.getBoundingClientRect();
+      const currentCenterY = rect.top + rect.height / 2;
+      const targetCenterY = window.innerHeight / 2;
+      const delta = targetCenterY - currentCenterY;
+      stage.style.transform = `translateY(${delta}px)`;
+    }
+
+    window.addEventListener("load", centerOnSelectedWorks);
+    window.addEventListener("resize", centerOnSelectedWorks);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(centerOnSelectedWorks);
+    }
+
+    // Half-screen background image on work-title hover, shown on the
+    // OPPOSITE side from the column being hovered. The split point is
+    // measured live from "selected works" on-screen center, so the two
+    // halves always meet exactly there — even if that's not precisely 50vw.
+    //
+    // The left column and right column each drive their own independent
+    // pair of layers (crossfading between two images within that half, the
+    // same way as before), rather than sharing one global "active" image.
+    // That means hovering quickly from a left-column title to a right-column
+    // title can leave both halves showing an image at once, instead of the
+    // new one always replacing the old — each side only clears once the
+    // mouse actually leaves that column's titles.
+    //
+    // A short "commit" delay on both showing and hiding means a quick brush
+    // of the mouse across a title doesn't flash the image on and off — it
+    // only appears once the hover genuinely lingers, and only disappears
+    // once the mouse has genuinely left, so switching between two titles on
+    // the same side reads as one smooth crossfade instead of a flash.
+    const SHOW_DELAY = 120;
+    const HIDE_DELAY = 220;
+    const selectedWorksEl = document.getElementById("selectedWorks");
+    const leftColumnEl = document.querySelector(".works-column.left");
+    const rightColumnEl = document.querySelector(".works-column.right");
+
+    function getSplitX() {
+      const rect = selectedWorksEl.getBoundingClientRect();
+      return rect.left + rect.width / 2;
+    }
+
+    // The preview can be a still image or a video (e.g. Samsung's is a
+    // .mov) — each bg-image layer gets its own <video>, kept hidden and
+    // paused until it's actually needed.
+    function isVideoFile(filename) {
+      return /\.(mov|mp4|webm)$/i.test(filename);
+    }
+
+    function ensureLayerVideo(layer) {
+      let video = layer.querySelector("video");
+      if (!video) {
+        video = document.createElement("video");
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        layer.appendChild(video);
+      }
+      return video;
+    }
+
+    function setLayerMedia(layer, filename) {
+      const video = ensureLayerVideo(layer);
+      if (isVideoFile(filename)) {
+        layer.style.backgroundImage = "none";
+        if (!video.src.endsWith(filename)) {
+          video.src = `display/${filename}`;
+        }
+        video.style.display = "block";
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+        video.style.display = "none";
+        layer.style.backgroundImage = `url('display/${filename}')`;
+      }
+    }
+
+    const FADE_IN_DURATION = "1s";
+    const FADE_OUT_DURATION = "1.8s";
+
+    function setupHoverTrack({ items, layers, getRect, colorEl }) {
+      let active = layers[0];
+      let showTimer = null;
+      let hideTimer = null;
+
+      items.forEach((item) => {
+        const filename = item.dataset.image;
+
+        item.addEventListener("mouseenter", () => {
+          clearTimeout(hideTimer);
+          hideTimer = null;
+          clearTimeout(showTimer);
+
+          showTimer = setTimeout(() => {
+            const rect = getRect();
+            const next = active === layers[0] ? layers[1] : layers[0];
+
+            setLayerMedia(next, filename);
+            next.style.left = rect.left;
+            next.style.width = rect.width;
+            next.style.transitionDuration = FADE_IN_DURATION;
+            next.style.opacity = "1";
+            active.style.transitionDuration = FADE_OUT_DURATION;
+            active.style.opacity = "0";
+            active = next;
+            colorEl.classList.add("image-behind");
+            showTimer = null;
+          }, SHOW_DELAY);
+        });
+
+        item.addEventListener("mouseleave", () => {
+          clearTimeout(showTimer);
+          showTimer = null;
+
+          hideTimer = setTimeout(() => {
+            active.style.transitionDuration = FADE_OUT_DURATION;
+            active.style.opacity = "0";
+            colorEl.classList.remove("image-behind");
+            hideTimer = null;
+          }, HIDE_DELAY);
+        });
+      });
+    }
+
+    // Left column hovers show their image on the right half.
+    setupHoverTrack({
+      items: document.querySelectorAll(".works-column.left .work-item"),
+      layers: [document.getElementById("bgRightHalfA"), document.getElementById("bgRightHalfB")],
+      getRect: () => {
+        const splitX = getSplitX();
+        return { left: `${splitX}px`, width: `${window.innerWidth - splitX}px` };
+      },
+      colorEl: rightColumnEl,
+    });
+
+    // Right column hovers show their image on the left half.
+    setupHoverTrack({
+      items: document.querySelectorAll(".works-column.right .work-item"),
+      layers: [document.getElementById("bgLeftHalfA"), document.getElementById("bgLeftHalfB")],
+      getRect: () => {
+        const splitX = getSplitX();
+        return { left: "0px", width: `${splitX}px` };
+      },
+      colorEl: leftColumnEl,
+    });
+  </script>
 
 </body>
 </html>
