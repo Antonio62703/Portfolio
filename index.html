@@ -27,10 +27,12 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --edge-margin: 1.5cm;
+    }
+
     html, body {
       height: 100%;
-      overflow-y: scroll;
-      scrollbar-gutter: stable;
     }
 
     .bg-image {
@@ -88,7 +90,7 @@
     nav.works-nav {
       position: fixed;
       top: 1.5cm;
-      left: 2.25rem;
+      left: var(--edge-margin);
       z-index: 1000;
       pointer-events: auto;
       display: flex;
@@ -115,7 +117,7 @@
     nav.contact-nav {
       position: fixed;
       top: 1.5cm;
-      right: 2.25rem;
+      right: var(--edge-margin);
       z-index: 1000;
       pointer-events: auto;
       display: flex;
@@ -187,12 +189,19 @@
     .works-section {
       --works-gap: clamp(2.5rem, 6vw, 5rem);
       display: grid;
-      grid-template-columns: max-content auto max-content;
-      justify-content: center;
+      grid-template-columns: 1fr max-content 1fr;
       align-items: start;
       column-gap: var(--works-gap);
       width: 100%;
       margin-top: 0.5rem;
+    }
+
+    .works-column.left {
+      justify-self: end;
+    }
+
+    .works-column.right {
+      justify-self: start;
     }
 
     .works-column {
@@ -430,7 +439,7 @@
     // used the same -20px nudge) — canvas-measured widths are close to but
     // not pixel-identical to the real rendered glyphs, so a hair of manual
     // centering correction is expected. Adjust this if it still drifts.
-    const ARC_CENTER_NUDGE_X = 15;
+    const ARC_CENTER_NUDGE_X = 0;
 
     function buildTitle() {
       titleContainer.innerHTML = "";
