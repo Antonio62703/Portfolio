@@ -74,7 +74,7 @@
     .contact-nav {
       position: fixed;
       top: 1.5cm;
-      right: 2.25rem;
+      right: var(--edge-margin);
       z-index: 1000;
       display: flex;
       flex-direction: column;
@@ -145,6 +145,10 @@
 
     .info-text {
       padding: 0 var(--edge-margin) var(--edge-margin) 3rem;
+    }
+
+    .info-text > div {
+      max-width: 28em;
     }
 
     .info-text .work-body {
