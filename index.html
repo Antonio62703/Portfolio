@@ -108,6 +108,30 @@
       opacity: 0.55;
     }
 
+    /* --- top-right contact --- */
+    nav.contact-nav {
+      position: fixed;
+      top: 2rem;
+      right: 2.25rem;
+      z-index: 1000;
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.4rem;
+    }
+
+    nav.contact-nav a {
+      font-size: 14pt;
+      color: #111111;
+      text-decoration: none;
+      transition: opacity 0.25s ease;
+    }
+
+    nav.contact-nav a:hover {
+      opacity: 0.55;
+    }
+
     /* --- title --- */
     .title {
       width: min(90vw, 900px);
@@ -292,6 +316,11 @@
   <nav class="works-nav reveal-after-title">
     <a href="info.html">Info</a>
     <a href="archive.html">Works</a>
+  </nav>
+
+  <nav class="contact-nav reveal-after-title">
+    <a href="https://www.instagram.com/antonio__chen/" target="_blank" rel="noopener">@antonio__chen</a>
+    <a href="mailto:ychen71@risd.edu">ychen71@risd.edu</a>
   </nav>
 
   <div class="bg-image" id="bgRightHalfA"></div>
