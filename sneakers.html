@@ -206,6 +206,22 @@
       width: 100%;
       height: auto;
     }
+
+    .video-embed-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--image-gap);
+      margin-top: 3cm;
+    }
+
+    .video-embed-row iframe {
+      width: 60%;
+      max-width: 400px;
+      aspect-ratio: 9 / 16;
+      border: none;
+      display: block;
+    }
   
     @font-face {
       font-family: 'ABC Gaisyr Book Italic';
@@ -240,11 +256,11 @@
       .mobile-block p {
         font-family: 'ABC Gaisyr Book Italic', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
         font-style: italic;
-        font-size: 16px;
+        font-size: 12px;
         letter-spacing: 0.02em;
         font-kerning: none;
         color: #000000;
-        max-width: 20em;
+        white-space: nowrap;
       }
     }
 </style>
@@ -331,6 +347,11 @@
       <div class="single-image"><img src="sneakers/denim3.jpeg" alt="Denim 3"></div>
       <div class="single-image"><img src="sneakers/denim4.jpeg" alt="Denim 4"></div>
       <div class="single-image"><img src="sneakers/denim5.jpeg" alt="Denim 5"></div>
+    </div>
+
+    <div class="video-embed-row">
+      <iframe src="https://www.instagram.com/reel/C5uSAqiMmIP/embed" allowtransparency="true" allowfullscreen></iframe>
+      <iframe src="https://www.instagram.com/reel/C_H0ZW3pH2t/embed" allowtransparency="true" allowfullscreen></iframe>
     </div>
 
   </div>
