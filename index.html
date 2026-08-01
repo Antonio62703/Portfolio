@@ -669,6 +669,32 @@
       }
     }
 
+    // Preload every preview image/video up front so by the time someone
+    // hovers, the browser already has the bytes cached and just has to
+    // paint — otherwise the opacity fade runs on its own timer while the
+    // file is still downloading, and the image "pops in" late instead of
+    // fading in smoothly. Derived from the actual data-image attributes
+    // rather than hardcoded, so new work items are picked up automatically.
+    function preloadPreviews() {
+      const files = [...document.querySelectorAll(".work-item")]
+        .map((item) => item.dataset.image)
+        .filter(Boolean);
+
+      files.forEach((filename) => {
+        if (isVideoFile(filename)) {
+          const video = document.createElement("video");
+          video.preload = "auto";
+          video.muted = true;
+          video.src = `display/${filename}`;
+        } else {
+          const img = new Image();
+          img.src = `display/${filename}`;
+        }
+      });
+    }
+
+    preloadPreviews();
+
     const FADE_IN_DURATION = "1s";
     const FADE_OUT_DURATION = "1.8s";
 
