@@ -118,13 +118,30 @@
 
     .work-meta {
       grid-column: 1 / 2;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
+      position: relative;
+    }
+
+    .scroll-indicator {
+      font-family: 'ABC Gaisyr Medium', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      font-kerning: none;
+      color: #000000;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      margin: 0;
+      opacity: 1;
+      transition: opacity 0.6s ease;
+    }
+
+    .scroll-indicator.hidden {
+      opacity: 0;
     }
 
     .work-meta-inner {
       width: max-content;
+      margin-left: auto;
       text-align: left;
     }
 
@@ -208,6 +225,51 @@
     .single-image.full {
       width: 100%;
     }
+
+    .project-navlink {
+      display: flex;
+      justify-content: flex-start;
+      text-align: left;
+      margin-top: 4rem;
+    }
+
+    .project-navlink a {
+      font-family: 'ABC Gaisyr Book', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.02em;
+      font-kerning: none;
+      color: #000000;
+      text-decoration: none;
+      border-bottom: 1px solid #000000;
+      padding-bottom: 2px;
+    }
+
+    .project-navlink a:hover {
+      opacity: 0.6;
+    }
+
+    .single-image.bigger {
+      width: 80%;
+    }
+
+    .single-image.smaller {
+      width: 50%;
+    }
+
+    .single-image.smaller-full {
+      width: 85%;
+    }
+
+    .image-row {
+      width: 85%;
+      display: flex;
+      gap: var(--image-gap);
+      justify-content: center;
+    }
+
+    .image-row .row-item {
+      width: 50%;
+    }
   
     @font-face {
       font-family: 'ABC Gaisyr Book Italic';
@@ -270,6 +332,7 @@
           <p class="work-category">Web, Installation</p>
           <p class="work-credit">Project collaborated with<br>Fah Prayottavekit and Punch Kulphisanrat</p>
         </div>
+        <p class="scroll-indicator">(Scroll ↓)</p>
       </div>
       <div class="work-body-wrap">
         <p class="work-body">This site analysis of the Athenaeum Library centers on the theme "Personalizing the Impersonal." Unlike many public libraries, the Athenaeum is defined by its intimacy, an atmosphere shaped not only by books, but by the people who use, move through, and care for the space. Our analysis focuses on how individual presence and small gestures transform a public institution into a deeply personal environment.</p>
@@ -282,15 +345,18 @@
         <p class="work-body">An interactive floor installation on the Mezzanine invites visitors to physically engage with the space, creating a moment of intimacy within a shared public environment.</p>
         <p class="work-subhead">Chair Archive Installation</p>
         <p class="work-body">Every chair in the Athenaeum is unique, donated over time by individuals. We translate this collection into a table-based installation with booklets, documenting the chairs as data—objects that quietly carry personal histories into the collective space.</p>
+        <div class="project-navlink"><a href="https://antonio62703.github.io/PersonalizingTheImpersonal/" target="_blank" rel="noopener">Personalizing The Impersonal ↗</a></div>
       </div>
     </div>
 
     <div class="image-list">
-      <div class="single-image"><video src="atheneaum/work1.mp4" autoplay muted loop playsinline></video></div>
+      <div class="single-image bigger"><video src="atheneaum/work1.mp4" autoplay muted loop playsinline></video></div>
       <div class="single-image full"><img src="atheneaum/p1.jpg" alt="Athenaeum 1"></div>
-      <div class="single-image"><img src="atheneaum/p2.jpg" alt="Athenaeum 2"></div>
-      <div class="single-image full"><img src="atheneaum/p3.jpg" alt="Athenaeum 3"></div>
-      <div class="single-image"><img src="atheneaum/p4.jpg" alt="Athenaeum 4"></div>
+      <div class="image-row">
+        <div class="single-image row-item"><img src="atheneaum/p2.jpg" alt="Athenaeum 2"></div>
+        <div class="single-image row-item"><img src="atheneaum/p4.jpg" alt="Athenaeum 4"></div>
+      </div>
+      <div class="single-image full smaller-full"><img src="atheneaum/p3.jpg" alt="Athenaeum 3"></div>
       <div class="single-image full"><img src="atheneaum/p5.jpg" alt="Athenaeum 5"></div>
     </div>
   </div>
@@ -460,6 +526,28 @@
       window.addEventListener('resize', () => {
         if (progress !== 0 || targetProgress !== 0) render(progress);
       });
+    })();
+  </script>
+  <script>
+    (function () {
+      const indicator = document.querySelector('.scroll-indicator');
+      const inner = document.querySelector('.work-meta-inner');
+      if (!indicator || !inner) return;
+
+      function alignIndicator() {
+        indicator.style.left = inner.offsetLeft + 'px';
+      }
+      alignIndicator();
+      window.addEventListener('resize', alignIndicator);
+
+      let dismissed = false;
+      window.addEventListener('scroll', () => {
+        if (dismissed) return;
+        if (window.scrollY > 20) {
+          indicator.classList.add('hidden');
+          dismissed = true;
+        }
+      }, { passive: true });
     })();
   </script>
 
