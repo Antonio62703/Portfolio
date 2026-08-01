@@ -171,7 +171,21 @@
     .single-image.full {
       width: 100%;
     }
-  
+
+    .video-embed {
+      display: flex;
+      justify-content: center;
+      margin-bottom: var(--image-gap);
+    }
+
+    .video-embed iframe {
+      width: 60%;
+      max-width: 400px;
+      aspect-ratio: 9 / 16;
+      border: none;
+      display: block;
+    }
+
     @font-face {
       font-family: 'ABC Gaisyr Book Italic';
       src: url('fonts/ABCGaisyr-BookItalic-Trial.woff') format('woff');
@@ -205,11 +219,11 @@
       .mobile-block p {
         font-family: 'ABC Gaisyr Book Italic', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
         font-style: italic;
-        font-size: 16px;
+        font-size: 12px;
         letter-spacing: 0.02em;
         font-kerning: none;
         color: #000000;
-        max-width: 20em;
+        white-space: nowrap;
       }
     }
 </style>
@@ -237,6 +251,10 @@
         <p class="work-body">Jacket + bag made from 2024 Paris Olympic athletes quilt.</p>
         <p class="work-body">Featured on Olympics and FastPaper Mag. Exhibited in ΔDesignArt 2025 and<br>TaiSPO 2025.</p>
       </div>
+    </div>
+
+    <div class="video-embed">
+      <iframe src="https://www.instagram.com/reel/DG5U6s5C9IP/embed" allowtransparency="true" allowfullscreen></iframe>
     </div>
 
     <div class="image-list">
