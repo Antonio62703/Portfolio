@@ -164,6 +164,79 @@
       margin-top: 1rem;
     }
 
+    .features-toggle {
+      background: none;
+      border: none;
+      padding: 0;
+      margin-top: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .features-toggle .features-label {
+      font-family: 'ABC Gaisyr Book', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      font-kerning: none;
+      color: #000000;
+    }
+
+    .features-toggle .arrow-icon-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+    }
+
+    .features-toggle .arrow-icon {
+      width: 7px;
+      height: 7px;
+      border-right: 1px solid #000000;
+      border-bottom: 1px solid #000000;
+      transform: rotate(45deg);
+      transition: transform 0.3s ease;
+    }
+
+    .features-toggle.open .arrow-icon {
+      transform: rotate(225deg);
+    }
+
+    .features-list {
+      list-style: none;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+    }
+
+    .features-list.open {
+      max-height: 400px;
+    }
+
+    .features-list li {
+      margin-top: 0.6rem;
+    }
+
+    .features-list li:first-child {
+      margin-top: 0.9rem;
+    }
+
+    .features-list a {
+      font-family: 'ABC Gaisyr Book', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      font-kerning: none;
+      color: #000000;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .features-list a:hover {
+      text-decoration: underline;
+    }
+
     @media (max-width: 900px) {
       .info-grid {
         grid-template-columns: 1fr;
@@ -244,6 +317,21 @@
         <p class="work-body">Antonio Chen (b. 2000s, Taiwan) is a Taiwanese multidisciplinary designer and Olympic fencer. He is the first male Taiwanese foil fencer to qualify for the Olympics in 36 years, marking a historic return since 1988.</p>
         <p class="work-body">Currently studying at the Rhode Island School of Design (RISD), Chen maintains his athletic career alongside his studies, traveling internationally for competitions on a near-monthly basis. His practice spans typography, identity systems, and digital environments, often capturing movement as a central visual language—translating the rhythm, speed, and flow of sport into forms that are minimal, tactile, and expressive.</p>
         <p class="work-body">His work and athletic career have been featured in Vogue, GQ, Marie Claire, Bella, TaiwanPlus, and Men's Uno, and he has been named to Dazed100.</p>
+
+        <button class="features-toggle" id="featuresToggle" aria-expanded="false" aria-controls="featuresList" aria-label="Show features">
+          <span class="features-label">Press/Features</span>
+          <span class="arrow-icon-wrap"><span class="arrow-icon"></span></span>
+        </button>
+
+        <ul class="features-list" id="featuresList">
+          <li><a href="https://www.dazeddigital.com/dazed100#yi-tung-chen" target="_blank" rel="noopener">DAZED 100 (2025)</a></li>
+          <li><a href="https://www.gq.com.tw/article/2024巴黎奧運-陳弈通-改製球鞋" target="_blank" rel="noopener">GQ (2025)</a></li>
+          <li><a href="https://www.taiwanplus.com/news/news-shows/zoom-in-zoom-out/250903013/taiwans-first-olympic-fencer-in-30-years" target="_blank" rel="noopener">TAIWAN PLUS (2025)</a></li>
+          <li><a href="https://www.vogue.com.tw/video/watch/ji-jian-wang-zi-chen-yi-tong-de-igzhui-zong-qing-dan" target="_blank" rel="noopener">VOGUE (2024)</a></li>
+          <li><a href="https://www.marieclaire.com.tw/lifestyle/issue/80433" target="_blank" rel="noopener">MARIE CLAIRE (2024)</a></li>
+          <li><a href="https://www.mensuno.tw/專訪巴黎奧運擊劍選手陳弈通：「擊劍給了我運動/" target="_blank" rel="noopener">MEN'S UNO (2024)</a></li>
+          <li><a href="https://www.bella.tw/articles/celebrities/47133" target="_blank" rel="noopener">BELLA (2024)</a></li>
+        </ul>
       </div>
     </div>
   </div>
@@ -412,6 +500,21 @@
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', () => {
         if (progress !== 0 || targetProgress !== 0) render(progress);
+      });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const toggleBtn = document.getElementById('featuresToggle');
+      const list = document.getElementById('featuresList');
+      if (!toggleBtn || !list) return;
+
+      toggleBtn.addEventListener('click', () => {
+        const isOpen = list.classList.toggle('open');
+        toggleBtn.classList.toggle('open', isOpen);
+        toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        toggleBtn.setAttribute('aria-label', isOpen ? 'Hide features' : 'Show features');
       });
     })();
   </script>
