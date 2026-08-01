@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="display/favicon.png">
+  <title>Paris Running Festival</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      background-color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      position: relative;
+    }
+
+    :root {
+      --edge-margin: 1.5cm;
+      --top-margin: 2cm;
+      --image-gap: 1cm;
+    }
+
+    @font-face {
+      font-family: 'ABC Monument Grotesk Medium';
+      src: url('fonts/ABCMonumentGrotesk-Medium-Trial.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'ABC Monument Grotesk Regular';
+      src: url('fonts/ABCMonumentGrotesk-Regular-Trial.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'ABC Gaisyr Book';
+      src: url('fonts/ABCGaisyr-Book-Trial.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'ABC Gaisyr Light Italic';
+      src: url('fonts/ABCGaisyr-LightItalic-Trial.woff') format('woff');
+      font-weight: normal;
+      font-style: italic;
+    }
+
+    @font-face {
+      font-family: 'ABC Gaisyr Medium';
+      src: url('fonts/ABCGaisyr-Medium-Trial.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    .info-section {
+      margin-bottom: 2rem;
+    }
+
+    .site-name {
+      font-family: 'ABC Gaisyr Book', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      font-kerning: none;
+      color: #000000;
+      position: fixed;
+      top: 1.5cm;
+      left: var(--edge-margin);
+      text-decoration: none;
+      z-index: 10;
+    }
+
+    .site-name:hover {
+      text-decoration: none;
+    }
+
+    .site-name .name-highlight {
+      font-family: 'ABC Gaisyr Book', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+
+    .name-highlight {
+      position: relative;
+      display: inline-block;
+    }
+
+    .name-highlight .letter {
+      display: inline-block;
+      transform-origin: 50% 55%;
+      transform: translate(var(--tx, 0px), var(--ty, 0px));
+    }
+
+    .name-highlight .letter.spin {
+      animation: letter-spin 0.6s ease;
+    }
+
+    @keyframes letter-spin {
+      to {
+        transform: translate(var(--tx, 0px), var(--ty, 0px)) rotate(360deg);
+      }
+    }
+
+    .prf-content {
+      padding: var(--top-margin) var(--edge-margin) var(--edge-margin) var(--edge-margin);
+    }
+
+    .description-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: var(--edge-margin);
+      margin-bottom: 3cm;
+    }
+
+    .work-meta {
+      grid-column: 1 / 2;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .work-meta-inner {
+      width: max-content;
+      text-align: left;
+    }
+
+    .work-body-wrap {
+      grid-column: 2 / 3;
+    }
+
+    .work-meta .work-title {
+      font-family: 'ABC Gaisyr Book', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.02em;
+      font-kerning: none;
+      color: #000000;
+      margin-bottom: 1.5rem;
+    }
+
+    .work-meta .work-category {
+      font-family: 'ABC Gaisyr Light Italic', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-style: italic;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      font-kerning: none;
+      color: #000000;
+    }
+
+    .work-body-wrap .work-body {
+      font-family: 'ABC Gaisyr Book', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      letter-spacing: 0.02em;
+      font-kerning: none;
+      color: #000000;
+    }
+
+    .image-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--image-gap);
+    }
+
+    .single-image {
+      width: 60%;
+    }
+
+    .single-image img,
+    .single-image video {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  
+    @font-face {
+      font-family: 'ABC Gaisyr Book Italic';
+      src: url('fonts/ABCGaisyr-BookItalic-Trial.woff') format('woff');
+      font-weight: normal;
+      font-style: italic;
+    }
+
+    .mobile-block {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      body > *:not(.mobile-block) {
+        display: none !important;
+      }
+
+      .mobile-block {
+        display: flex;
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        z-index: 999999;
+      }
+
+      .mobile-block p {
+        font-family: 'ABC Gaisyr Book Italic', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+        font-style: italic;
+        font-size: 12px;
+        letter-spacing: 0.02em;
+        font-kerning: none;
+        color: #000000;
+        white-space: nowrap;
+      }
+    }
+</style>
+</head>
+<body>
+
+  <div class="mobile-block">
+    <p>Mobile view coming soon — please visit on desktop.</p>
+  </div>
+
+
+  <div class="info-section">
+    <a class="site-name" href="index.html"><span class="name-highlight"><span class="letter">A</span><span class="letter">n</span><span class="letter">t</span><span class="letter">o</span><span class="letter">n</span><span class="letter">i</span><span class="letter">o</span><span class="letter">&nbsp;</span><span class="letter">C</span><span class="letter">h</span><span class="letter">e</span><span class="letter">n</span></span></a>
+  </div>
+
+  <div class="prf-content">
+    <div class="description-grid">
+      <div class="work-meta">
+        <div class="work-meta-inner">
+          <p class="work-title"><span class="name-highlight"><span class="letter">P</span><span class="letter">a</span><span class="letter">r</span><span class="letter">i</span><span class="letter">s</span><span class="letter">&nbsp;</span><span class="letter">R</span><span class="letter">u</span><span class="letter">n</span><span class="letter">n</span><span class="letter">i</span><span class="letter">n</span><span class="letter">g</span><span class="letter">&nbsp;</span><span class="letter">F</span><span class="letter">e</span><span class="letter">s</span><span class="letter">t</span><span class="letter">i</span><span class="letter">v</span><span class="letter">a</span><span class="letter">l</span></span></p>
+          <p class="work-category">Identity</p>
+        </div>
+      </div>
+      <div class="work-body-wrap">
+        <p class="work-body">A conceptual running festival set at the Fondation Louis Vuitton in Paris, inspired by the building's flowing, sail-like architecture. The event design emphasizes movement and draws inspiration from track and field graphics, bringing a bold, athletic visual language to the experience.</p>
+      </div>
+    </div>
+
+    <div class="image-list">
+      <div class="single-image"><img src="prf/prf1.jpeg" alt="Paris Running Festival 1"></div>
+      <div class="single-image"><img src="prf/prf2.jpeg" alt="Paris Running Festival 2"></div>
+      <div class="single-image"><img src="prf/prf3.jpeg" alt="Paris Running Festival 3"></div>
+      <div class="single-image"><img src="prf/prf4.jpeg" alt="Paris Running Festival 4"></div>
+      <div class="single-image"><img src="prf/prf5.jpeg" alt="Paris Running Festival 5"></div>
+      <div class="single-image"><img src="prf/prf6.jpeg" alt="Paris Running Festival 6"></div>
+      <div class="single-image"><img src="prf/prf7.jpeg" alt="Paris Running Festival 7"></div>
+      <div class="single-image"><img src="prf/prf8.jpeg" alt="Paris Running Festival 8"></div>
+      <div class="single-image"><img src="prf/prf9.jpeg" alt="Paris Running Festival 9"></div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.name-highlight .letter').forEach((letter) => {
+      let state = 'idle'; // 'idle' | 'spinning' | 'cooldown'
+
+      letter.addEventListener('mouseenter', () => {
+        if (state !== 'idle') return;
+        state = 'spinning';
+        letter.classList.add('spin');
+      });
+
+      letter.addEventListener('animationend', () => {
+        letter.classList.remove('spin');
+        state = 'cooldown';
+        setTimeout(() => {
+          state = 'idle';
+        }, 500);
+      });
+    });
+  </script>
+
+  <script>
+    (function () {
+      const nameEl = document.querySelector('.site-name');
+      const container = document.querySelector('.name-highlight');
+      const letters = Array.from(container.querySelectorAll('.letter'));
+
+      const lineHeight = 22;    // vertical spacing between stacked letters
+      const animDuration = 800; // ms for the transform to fully play out
+
+      // These are only populated once we actually leave the resting state.
+      // At rest, letters stay in normal document flow (no position/left/top
+      // overrides), so they render exactly like the work titles do — no
+      // frozen-in sub-pixel measurements to drift out of sync.
+      let naturalX = [];
+      let letterWidths = [];
+      let targetTx = [];
+      let startTop = 0;
+      let startLeft = 0;
+      let targetLeft = 0;
+
+      function measureEdgeMarginPx() {
+        const marginProbe = document.createElement('div');
+        marginProbe.style.cssText = 'position:absolute; visibility:hidden; height:0; width:var(--edge-margin);';
+        document.body.appendChild(marginProbe);
+        const px = marginProbe.getBoundingClientRect().width;
+        document.body.removeChild(marginProbe);
+        return px;
+      }
+
+      function enableAbsoluteMode() {
+        // Measure letters while they're still in native flow (sub-pixel precise),
+        // right at the moment we're about to animate away from rest.
+        const containerRect = container.getBoundingClientRect();
+        naturalX = letters.map((el) => el.getBoundingClientRect().left - containerRect.left);
+        letterWidths = letters.map((el) => el.getBoundingClientRect().width);
+
+        // Final horizontal translate per letter: centers each letter on a shared vertical
+        // axis (container-local x = 0) instead of left-aligning them
+        targetTx = letters.map((el, i) => -letterWidths[i] / 2 - naturalX[i]);
+
+        container.style.width = containerRect.width + 'px';
+        container.style.height = containerRect.height + 'px';
+
+        letters.forEach((el, i) => {
+          el.style.position = 'absolute';
+          el.style.left = naturalX[i] + 'px';
+          el.style.top = '0px';
+        });
+
+        const edgeMarginPx = measureEdgeMarginPx();
+        targetLeft = edgeMarginPx / 2; // center of the 1.5cm margin gutter
+
+        const nameRect = nameEl.getBoundingClientRect();
+        startTop = nameRect.top;
+        startLeft = nameRect.left;
+      }
+
+      function disableAbsoluteMode() {
+        // Return fully to native text flow, matching the work titles' rendering.
+        letters.forEach((el) => {
+          el.style.position = '';
+          el.style.left = '';
+          el.style.top = '';
+          el.style.removeProperty('--tx');
+          el.style.removeProperty('--ty');
+        });
+        container.style.width = '';
+        container.style.height = '';
+        nameEl.style.top = '';
+        nameEl.style.left = '';
+      }
+
+      let progress = 0;        // 0 = original horizontal, 1 = vertical stacked
+      let targetProgress = 0;
+      let animFrame = null;
+      let animStartTime = null;
+      let animStartProgress = 0;
+
+      function easeOutQuint(t) {
+        return 1 - Math.pow(1 - t, 5);
+      }
+
+      function render(p) {
+        letters.forEach((el, i) => {
+          const tx = targetTx[i] * p;
+          const ty = i * lineHeight * p;
+          el.style.setProperty('--tx', tx + 'px');
+          el.style.setProperty('--ty', ty + 'px');
+        });
+
+        const totalVerticalHeight = lineHeight * (letters.length - 1);
+        const verticalOffset = 80; // px to shift the vertical layout upward from center
+        const targetTop = window.innerHeight / 2 - totalVerticalHeight / 2 - verticalOffset;
+        const top = startTop + (targetTop - startTop) * p;
+        const left = startLeft + (targetLeft - startLeft) * p;
+
+        nameEl.style.top = top + 'px';
+        nameEl.style.left = left + 'px';
+      }
+
+      function animateTo(target) {
+        if (targetProgress === target && animFrame) return;
+
+        if (target !== 0 && progress === 0 && targetProgress === 0) {
+          // Leaving rest: measure now, while still in native flow, then switch modes.
+          enableAbsoluteMode();
+        }
+
+        targetProgress = target;
+        animStartProgress = progress;
+        animStartTime = null;
+        if (animFrame) cancelAnimationFrame(animFrame);
+
+        function step(timestamp) {
+          if (animStartTime === null) animStartTime = timestamp;
+          const elapsed = timestamp - animStartTime;
+          const t = Math.min(elapsed / animDuration, 1);
+          const eased = easeOutQuint(t);
+          progress = animStartProgress + (targetProgress - animStartProgress) * eased;
+          render(progress);
+
+          if (t < 1) {
+            animFrame = requestAnimationFrame(step);
+          } else {
+            progress = targetProgress;
+            render(progress);
+            animFrame = null;
+            if (progress === 0) {
+              // Back at rest: drop back to native, pixel-perfect text flow.
+              disableAbsoluteMode();
+            }
+          }
+        }
+        animFrame = requestAnimationFrame(step);
+      }
+
+      function onScroll() {
+        const desired = window.scrollY > 0 ? 1 : 0;
+        if (desired !== targetProgress) animateTo(desired);
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', () => {
+        if (progress !== 0 || targetProgress !== 0) render(progress);
+      });
+    })();
+  </script>
+
+</body>
+</html>

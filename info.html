@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="display/favicon.png">
+  <title>Info</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      background-color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      position: relative;
+    }
+
+    :root {
+      --edge-margin: 1.5cm;
+      --top-margin: 2cm;
+    }
+
+    @font-face {
+      font-family: 'ABC Monument Grotesk Medium';
+      src: url('fonts/ABCMonumentGrotesk-Medium-Trial.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'ABC Monument Grotesk Regular';
+      src: url('fonts/ABCMonumentGrotesk-Regular-Trial.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'ABC Gaisyr Book';
+      src: url('fonts/ABCGaisyr-Book-Trial.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'ABC Gaisyr Light Italic';
+      src: url('fonts/ABCGaisyr-LightItalic-Trial.woff') format('woff');
+      font-weight: normal;
+      font-style: italic;
+    }
+
+    .info-section {
+      margin-bottom: 2rem;
+    }
+
+    .site-name {
+      font-family: 'ABC Gaisyr Book', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      font-kerning: none;
+      color: #000000;
+      position: fixed;
+      top: 1.5cm;
+      left: var(--edge-margin);
+      text-decoration: none;
+      z-index: 10;
+    }
+
+    .site-name:hover {
+      text-decoration: none;
+    }
+
+    .contact-nav {
+      position: fixed;
+      top: 1.5cm;
+      right: var(--edge-margin);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.4rem;
+    }
+
+    .contact-nav a {
+      font-family: 'ABC Gaisyr Book', Georgia, "Times New Roman", serif;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      font-kerning: none;
+      color: #111111;
+      text-decoration: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .contact-nav a:hover {
+      opacity: 0.55;
+    }
+
+    .site-name .name-highlight {
+      font-family: 'ABC Gaisyr Book', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+
+    .name-highlight {
+      position: relative;
+      display: inline-block;
+    }
+
+    .name-highlight .letter {
+      display: inline-block;
+      transform-origin: 50% 55%;
+      transform: translate(var(--tx, 0px), var(--ty, 0px));
+    }
+
+    .name-highlight .letter.spin {
+      animation: letter-spin 0.6s ease;
+    }
+
+    @keyframes letter-spin {
+      to {
+        transform: translate(var(--tx, 0px), var(--ty, 0px)) rotate(360deg);
+      }
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    .info-image {
+      height: 50vh;
+      position: sticky;
+      top: 50%;
+      transform: translateY(-50%);
+      overflow: hidden;
+    }
+
+    .info-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: right center;
+      display: block;
+    }
+
+    .info-text {
+      padding: 0 var(--edge-margin) var(--edge-margin) 3rem;
+    }
+
+    .info-text > div {
+      max-width: 28em;
+    }
+
+    .info-text .work-body {
+      font-family: 'ABC Gaisyr Book', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      letter-spacing: 0.02em;
+      font-kerning: none;
+      color: #000000;
+    }
+
+    .info-text .work-body + .work-body {
+      margin-top: 1rem;
+    }
+
+    .features-toggle {
+      background: none;
+      border: none;
+      padding: 0;
+      margin-top: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .features-toggle .features-label {
+      font-family: 'ABC Gaisyr Book', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      font-kerning: none;
+      color: #000000;
+    }
+
+    .features-toggle .arrow-icon-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+    }
+
+    .features-toggle .arrow-icon {
+      width: 7px;
+      height: 7px;
+      border-right: 1px solid #000000;
+      border-bottom: 1px solid #000000;
+      transform: rotate(45deg);
+      transition: transform 0.3s ease;
+    }
+
+    .features-toggle.open .arrow-icon {
+      transform: rotate(225deg);
+    }
+
+    .features-list {
+      list-style: none;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+    }
+
+    .features-list.open {
+      max-height: 400px;
+    }
+
+    .features-list li {
+      margin-top: 0.6rem;
+    }
+
+    .features-list li:first-child {
+      margin-top: 0.9rem;
+    }
+
+    .features-list a {
+      font-family: 'ABC Gaisyr Book', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      font-kerning: none;
+      color: #000000;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .features-list a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 900px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-image {
+        height: 60vh;
+        position: relative;
+      }
+
+      .info-text {
+        padding: 2rem var(--edge-margin) var(--edge-margin) var(--edge-margin);
+      }
+    }
+  
+    @font-face {
+      font-family: 'ABC Gaisyr Book Italic';
+      src: url('fonts/ABCGaisyr-BookItalic-Trial.woff') format('woff');
+      font-weight: normal;
+      font-style: italic;
+    }
+
+    .mobile-block {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      body > *:not(.mobile-block) {
+        display: none !important;
+      }
+
+      .mobile-block {
+        display: flex;
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 2rem;
+        z-index: 999999;
+      }
+
+      .mobile-block p {
+        font-family: 'ABC Gaisyr Book Italic', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+        font-style: italic;
+        font-size: 12px;
+        letter-spacing: 0.02em;
+        font-kerning: none;
+        color: #000000;
+        white-space: nowrap;
+      }
+    }
+</style>
+</head>
+<body>
+
+  <div class="mobile-block">
+    <p>Mobile view coming soon — please visit on desktop.</p>
+  </div>
+
+
+  <div class="info-section">
+    <a class="site-name" href="index.html"><span class="name-highlight"><span class="letter">A</span><span class="letter">n</span><span class="letter">t</span><span class="letter">o</span><span class="letter">n</span><span class="letter">i</span><span class="letter">o</span><span class="letter">&nbsp;</span><span class="letter">C</span><span class="letter">h</span><span class="letter">e</span><span class="letter">n</span></span></a>
+  </div>
+
+  <nav class="contact-nav">
+    <a href="https://www.instagram.com/antonio__chen/" target="_blank" rel="noopener">@antonio__chen</a>
+    <a href="mailto:ychen71@risd.edu">ychen71@risd.edu</a>
+  </nav>
+
+  <div class="info-grid">
+    <div class="info-image"><img src="display/self.jpg" alt="Antonio Chen"></div>
+    <div class="info-text">
+      <div>
+        <p class="work-body">Antonio Chen (b. 2000s, Taiwan) is a Taiwanese multidisciplinary designer and Olympic fencer. He is the first male Taiwanese foil fencer to qualify for the Olympics in 36 years, marking a historic return since 1988.</p>
+        <p class="work-body">Currently studying at the Rhode Island School of Design (RISD), Chen maintains his athletic career alongside his studies, traveling internationally for competitions on a near-monthly basis. His practice spans typography, identity systems, and digital environments, often capturing movement as a central visual language—translating the rhythm, speed, and flow of sport into forms that are minimal, tactile, and expressive.</p>
+        <p class="work-body">His work and athletic career have been featured in Vogue, GQ, Marie Claire, Bella, TaiwanPlus, and Men's Uno, and he has been named to Dazed100.</p>
+
+        <button class="features-toggle" id="featuresToggle" aria-expanded="false" aria-controls="featuresList" aria-label="Show features">
+          <span class="features-label">Press/Features</span>
+          <span class="arrow-icon-wrap"><span class="arrow-icon"></span></span>
+        </button>
+
+        <ul class="features-list" id="featuresList">
+          <li><a href="https://www.dazeddigital.com/dazed100#yi-tung-chen" target="_blank" rel="noopener">DAZED 100 (2025)</a></li>
+          <li><a href="https://www.gq.com.tw/article/2024巴黎奧運-陳弈通-改製球鞋" target="_blank" rel="noopener">GQ (2025)</a></li>
+          <li><a href="https://www.taiwanplus.com/news/news-shows/zoom-in-zoom-out/250903013/taiwans-first-olympic-fencer-in-30-years" target="_blank" rel="noopener">TAIWAN PLUS (2025)</a></li>
+          <li><a href="https://www.vogue.com.tw/video/watch/ji-jian-wang-zi-chen-yi-tong-de-igzhui-zong-qing-dan" target="_blank" rel="noopener">VOGUE (2024)</a></li>
+          <li><a href="https://www.marieclaire.com.tw/lifestyle/issue/80433" target="_blank" rel="noopener">MARIE CLAIRE (2024)</a></li>
+          <li><a href="https://www.mensuno.tw/專訪巴黎奧運擊劍選手陳弈通：「擊劍給了我運動/" target="_blank" rel="noopener">MEN'S UNO (2024)</a></li>
+          <li><a href="https://www.bella.tw/articles/celebrities/47133" target="_blank" rel="noopener">BELLA (2024)</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.name-highlight .letter').forEach((letter) => {
+      let state = 'idle'; // 'idle' | 'spinning' | 'cooldown'
+
+      letter.addEventListener('mouseenter', () => {
+        if (state !== 'idle') return;
+        state = 'spinning';
+        letter.classList.add('spin');
+      });
+
+      letter.addEventListener('animationend', () => {
+        letter.classList.remove('spin');
+        state = 'cooldown';
+        setTimeout(() => {
+          state = 'idle';
+        }, 500);
+      });
+    });
+  </script>
+
+  <script>
+    (function () {
+      const nameEl = document.querySelector('.site-name');
+      const container = document.querySelector('.name-highlight');
+      const letters = Array.from(container.querySelectorAll('.letter'));
+
+      const lineHeight = 22;    // vertical spacing between stacked letters
+      const animDuration = 800; // ms for the transform to fully play out
+
+      // These are only populated once we actually leave the resting state.
+      // At rest, letters stay in normal document flow (no position/left/top
+      // overrides), so they render exactly like the work titles do — no
+      // frozen-in sub-pixel measurements to drift out of sync.
+      let naturalX = [];
+      let letterWidths = [];
+      let targetTx = [];
+      let startTop = 0;
+      let startLeft = 0;
+      let targetLeft = 0;
+
+      function measureEdgeMarginPx() {
+        const marginProbe = document.createElement('div');
+        marginProbe.style.cssText = 'position:absolute; visibility:hidden; height:0; width:var(--edge-margin);';
+        document.body.appendChild(marginProbe);
+        const px = marginProbe.getBoundingClientRect().width;
+        document.body.removeChild(marginProbe);
+        return px;
+      }
+
+      function enableAbsoluteMode() {
+        // Measure letters while they're still in native flow (sub-pixel precise),
+        // right at the moment we're about to animate away from rest.
+        const containerRect = container.getBoundingClientRect();
+        naturalX = letters.map((el) => el.getBoundingClientRect().left - containerRect.left);
+        letterWidths = letters.map((el) => el.getBoundingClientRect().width);
+
+        // Final horizontal translate per letter: centers each letter on a shared vertical
+        // axis (container-local x = 0) instead of left-aligning them
+        targetTx = letters.map((el, i) => -letterWidths[i] / 2 - naturalX[i]);
+
+        container.style.width = containerRect.width + 'px';
+        container.style.height = containerRect.height + 'px';
+
+        letters.forEach((el, i) => {
+          el.style.position = 'absolute';
+          el.style.left = naturalX[i] + 'px';
+          el.style.top = '0px';
+        });
+
+        const edgeMarginPx = measureEdgeMarginPx();
+        targetLeft = edgeMarginPx / 2; // center of the 1.5cm margin gutter
+
+        const nameRect = nameEl.getBoundingClientRect();
+        startTop = nameRect.top;
+        startLeft = nameRect.left;
+      }
+
+      function disableAbsoluteMode() {
+        // Return fully to native text flow, matching the work titles' rendering.
+        letters.forEach((el) => {
+          el.style.position = '';
+          el.style.left = '';
+          el.style.top = '';
+          el.style.removeProperty('--tx');
+          el.style.removeProperty('--ty');
+        });
+        container.style.width = '';
+        container.style.height = '';
+        nameEl.style.top = '';
+        nameEl.style.left = '';
+      }
+
+      let progress = 0;        // 0 = original horizontal, 1 = vertical stacked
+      let targetProgress = 0;
+      let animFrame = null;
+      let animStartTime = null;
+      let animStartProgress = 0;
+
+      function easeOutQuint(t) {
+        return 1 - Math.pow(1 - t, 5);
+      }
+
+      function render(p) {
+        letters.forEach((el, i) => {
+          const tx = targetTx[i] * p;
+          const ty = i * lineHeight * p;
+          el.style.setProperty('--tx', tx + 'px');
+          el.style.setProperty('--ty', ty + 'px');
+        });
+
+        const totalVerticalHeight = lineHeight * (letters.length - 1);
+        const verticalOffset = 80; // px to shift the vertical layout upward from center
+        const targetTop = window.innerHeight / 2 - totalVerticalHeight / 2 - verticalOffset;
+        const top = startTop + (targetTop - startTop) * p;
+        const left = startLeft + (targetLeft - startLeft) * p;
+
+        nameEl.style.top = top + 'px';
+        nameEl.style.left = left + 'px';
+      }
+
+      function animateTo(target) {
+        if (targetProgress === target && animFrame) return;
+
+        if (target !== 0 && progress === 0 && targetProgress === 0) {
+          // Leaving rest: measure now, while still in native flow, then switch modes.
+          enableAbsoluteMode();
+        }
+
+        targetProgress = target;
+        animStartProgress = progress;
+        animStartTime = null;
+        if (animFrame) cancelAnimationFrame(animFrame);
+
+        function step(timestamp) {
+          if (animStartTime === null) animStartTime = timestamp;
+          const elapsed = timestamp - animStartTime;
+          const t = Math.min(elapsed / animDuration, 1);
+          const eased = easeOutQuint(t);
+          progress = animStartProgress + (targetProgress - animStartProgress) * eased;
+          render(progress);
+
+          if (t < 1) {
+            animFrame = requestAnimationFrame(step);
+          } else {
+            progress = targetProgress;
+            render(progress);
+            animFrame = null;
+            if (progress === 0) {
+              // Back at rest: drop back to native, pixel-perfect text flow.
+              disableAbsoluteMode();
+            }
+          }
+        }
+        animFrame = requestAnimationFrame(step);
+      }
+
+      function onScroll() {
+        const desired = window.scrollY > 0 ? 1 : 0;
+        if (desired !== targetProgress) animateTo(desired);
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', () => {
+        if (progress !== 0 || targetProgress !== 0) render(progress);
+      });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      const toggleBtn = document.getElementById('featuresToggle');
+      const list = document.getElementById('featuresList');
+      if (!toggleBtn || !list) return;
+
+      toggleBtn.addEventListener('click', () => {
+        const isOpen = list.classList.toggle('open');
+        toggleBtn.classList.toggle('open', isOpen);
+        toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        toggleBtn.setAttribute('aria-label', isOpen ? 'Hide features' : 'Show features');
+      });
+    })();
+  </script>
+
+  <script>
+    function alignTextToImage() {
+      const img = document.querySelector('.info-image');
+      const textCol = document.querySelector('.info-text');
+      const textInner = document.querySelector('.info-text > div');
+      if (!img || !textCol || !textInner) return;
+      textInner.style.marginTop = '0px';
+      const imgRect = img.getBoundingClientRect();
+      const textRect = textCol.getBoundingClientRect();
+      const offset = imgRect.top - textRect.top;
+      textInner.style.marginTop = Math.max(offset, 0) + 'px';
+    }
+
+    alignTextToImage();
+    window.addEventListener('load', alignTextToImage);
+    window.addEventListener('resize', alignTextToImage);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(alignTextToImage);
+    }
+  </script>
+
+</body>
+</html>
