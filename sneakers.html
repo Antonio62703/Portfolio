@@ -198,7 +198,7 @@
     }
 
     .single-image {
-      width: 60%;
+      width: 80%;
     }
 
     .single-image img,
@@ -206,6 +206,16 @@
       display: block;
       width: 100%;
       height: auto;
+    }
+
+    .image-row {
+      display: flex;
+      width: 80%;
+      gap: var(--image-gap);
+    }
+
+    .image-row .single-image {
+      width: 50%;
     }
 
     .video-embed-row {
@@ -305,10 +315,14 @@
     <div class="image-list">
       <div class="single-image"><img src="sneakers/atlanta1.jpg" alt="Atlanta 1"></div>
       <div class="single-image"><img src="sneakers/atlanta2.jpg" alt="Atlanta 2"></div>
-      <div class="single-image"><img src="sneakers/atlanta3.jpg" alt="Atlanta 3"></div>
-      <div class="single-image"><img src="sneakers/atlanta4.jpg" alt="Atlanta 4"></div>
-      <div class="single-image"><img src="sneakers/atlanta5.jpg" alt="Atlanta 5"></div>
-      <div class="single-image"><img src="sneakers/atlanta6.jpg" alt="Atlanta 6"></div>
+      <div class="image-row">
+        <div class="single-image"><img src="sneakers/atlanta3.jpg" alt="Atlanta 3"></div>
+        <div class="single-image"><img src="sneakers/atlanta4.jpg" alt="Atlanta 4"></div>
+      </div>
+      <div class="image-row">
+        <div class="single-image"><img src="sneakers/atlanta5.jpg" alt="Atlanta 5"></div>
+        <div class="single-image"><img src="sneakers/atlanta6.jpg" alt="Atlanta 6"></div>
+      </div>
     </div>
 
     <div class="description-grid sub-grid">
